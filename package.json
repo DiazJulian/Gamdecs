@@ -1,0 +1,39 @@
+{
+  "name": "next-hook",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next",
+    "lint": "eslint .",
+    "build": "next build",
+    "start": "next start -p $PORT"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@auth0/auth0-react": "^1.9.0",
+    "@fortawesome/fontawesome-svg-core": "1.2.36",
+    "@fortawesome/free-brands-svg-icons": "5.15.4",
+    "@fortawesome/free-solid-svg-icons": "5.15.4",
+    "@fortawesome/react-fontawesome": "0.1.15",
+    "axios": "0.21.4",
+    "dayjs": "1.10.6",
+    "framer-motion": "4.1.17",
+    "next": "11.1.2",
+    "react": "17.0.2",
+    "react-content-loader": "6.0.3",
+    "react-dom": "17.0.2",
+    "react-lottie": "1.2.3",
+    "react-youtube": "7.13.1",
+    "sweetalert": "2.1.2"
+  },
+  "devDependencies": {
+    "@svgr/webpack": "^6.2.1",
+    "standard": "16.0.4"
+  },
+  "eslintConfig": {
+    "extends": "./node_modules/standard/eslintrc.json"
+  }
+}
