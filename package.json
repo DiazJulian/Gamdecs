@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "dev": "next",
-    "lint": "eslint .",
     "build": "next build",
     "start": "next start -p $PORT"
   },
@@ -30,8 +29,7 @@
     "sweetalert": "2.1.2"
   },
   "devDependencies": {
-    "@svgr/webpack": "^6.2.1",
-    "standard": "16.0.4"
+    "@svgr/webpack": "^6.2.1"
   },
   "eslintConfig": {
     "extends": "./node_modules/standard/eslintrc.json"
