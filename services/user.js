@@ -9,11 +9,8 @@ export const signIn = async (email, password) => {
     const res = await axios.post(`${BaseUrl}/user/login`, { email, password })
     const token = res.data
 
-    window.localStorage.setItem('token', token)
-
-    console.log(`Obtenido: ${token}`)
-    if (res) {
-      console.log('Usuario logueado')
+    if (token) {
+      window.localStorage.setItem('token', token)
     }
     return res.data
   } catch (error) {
@@ -36,7 +33,6 @@ export const registerUser = async (formData, config) => {
 
 export const getUser = async (name) => {
   const user = await axios.get(`${BaseUrl}/user/${name}`)
-  console.log(user)
 
   return user
 }
@@ -61,11 +57,9 @@ export const getSession = async () => {
   if (token) {
     const res = await axios.get(`${BaseUrl}/user/auth/${token}`)
     const resUser = res.data
-    console.log(resUser)
     // invalid signature
     if (res === null || resUser === 'TokenExpiredError' || resUser === 'invalid token' || resUser === 'JsonWebTokenError' || resUser === 'invalid signature') {
       window.localStorage.removeItem('token')
-      console.log('Session eliminada')
       Router.push('/login')
     }
 
@@ -77,7 +71,6 @@ export const getSession = async () => {
 // Redirecciona si hay sesion
 export const redirectIfAuth = async () => {
   const user = await getSession()
-  console.log(user)
   if (user) {
     Router.push('/usuarios')
   }
@@ -88,7 +81,6 @@ export const redirectIfAuth = async () => {
 export const redirectIfNotAuth = async () => {
   const user = await getSession()
   if (!user) {
-    console.log('No auth')
     Router.push('/login')
     return true
   }
@@ -99,7 +91,6 @@ export const redirectIfNotAuth = async () => {
 export const redirectIfNotAdmin = async () => {
   const user = await getSession()
   if (!user || user.role !== 'Admin') {
-    console.log('No auth')
     Router.push('/')
     return true
   }
@@ -113,8 +104,6 @@ export const userAdmin = async () => {
     return false
   }
   if (user.role === 'Admin') {
-    console.log('Usuario Admin')
-
     return true
   }
   return false
@@ -127,8 +116,6 @@ export const userNormal = async () => {
     return false
   }
   if (user.role === 'Normal') {
-    console.log('Usuario Normal')
-
     return true
   }
   return false

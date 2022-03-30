@@ -8,7 +8,7 @@ export default function About() {
         <>
             <div>
                 <article className="Gamdecs">
-                    <img src="https://res.cloudinary.com/dhehnqygp/image/upload/v1611868434/logo_ssga2p.png" alt="imagen" /> Gamdecs
+                    <img src="https://res.cloudinary.com/dhehnqygp/image/upload/v1611868434/Logo-G_hai54z.png" alt="imagen" /> Gamdecs
                     <h2>Proyecto personal de desarrollo web</h2>
                     <Link href="/terminos" >
                         <h4>Terminos y condiciones de uso</h4>
@@ -27,7 +27,6 @@ export default function About() {
                     </a>
                 </article>
             </div>
-            <p>Copyright Gamdecs &copy; 2021</p>
 
             <style jsx>{`
                 div {

@@ -1,11 +1,10 @@
-import { useEffect, useState, Suspense, lazy, memo } from 'react'
+import { Suspense, lazy, memo } from 'react'
 import Navigation from '../components/Navigation'
 import Head from 'next/head'
 import Layout from '../components/Layout'
 import Categories from '../components/Categories'
 import Professionals from '../components/Professionals'
 import Footer from '../components/Footer'
-import { getSession } from '../services/user'
 import About from '../components/About'
 import LoaderPost from '../components/Loaders/LoaderPosts'
 import GamdecsLoader from '../components/Loaders/GamdecsLoader'
@@ -13,23 +12,11 @@ import UsersVideos from '../components/Video/UsersVideos'
 import { motion } from 'framer-motion'
 import Lottie from 'react-lottie'
 import lottieCode from '../lottie/code.json'
+import { useSession } from '../hooks/useSession'
 const UsersPosts = lazy(() => import('../components/Posts/UsersPosts'))
 
 function Home () {
-  const [session, setSession] = useState(false)
-  const [loading, setLoading] = useState(false)
-
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(true)
-    }, 2000)
-    const resUser = async () => {
-      const res = await getSession()
-      if (res) setSession(true)
-      console.log('Index Montado')
-    }
-    resUser()
-  }, [session, loading])
+  const {session, loading} = useSession()
 
   const Options = {
     loop: true,

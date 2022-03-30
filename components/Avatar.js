@@ -1,26 +1,15 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheckCircle, faTrash } from '@fortawesome/free-solid-svg-icons'
-import { deleteRed, getSession, newRed, userAdmin } from '../services/user'
+import { deleteRed, newRed } from '../services/user'
 import Router from 'next/router'
+import { useSession } from '../hooks/useSession'
 
 export default function Avatar ({ data }) {
   const [input1, setInput1] = useState('https://')
   const [input2, setInput2] = useState('https://')
   const [input3, setInput3] = useState('https://')
-  const [userSession, setSession] = useState(null)
-  const [isAdmin, setAdmin] = useState(false)
-
-  useEffect(async () => {
-    const res = await getSession()
-    if (res) {
-      setSession(res.name)
-    }
-    const admin = await userAdmin()
-    if (admin) {
-      setAdmin(true)
-    }
-  }, [])
+  const {userSession, isAdmin} = useSession()
 
   const SubmitUno = async (e) => {
     e.preventDefault()
@@ -53,8 +42,6 @@ export default function Avatar ({ data }) {
     }
   }
 
-  console.log(data)
-  console.log(userSession)
   return (
     <>
       <div className='container'>

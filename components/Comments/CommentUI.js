@@ -3,10 +3,7 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import useTimeAgo from '../../hooks/useTimeAgo';
 
 export default function CommentUI ({userSession,userPost,admin, deleteComment, ...item}) {
-    console.log(userSession,userPost,admin);
-    console.log(item.user);
     const {createdAt, time} = item
-    console.log(item);
     const date = new Date(createdAt || time)
     const postTime = useTimeAgo(+date)
 

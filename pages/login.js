@@ -21,7 +21,6 @@ export default function Login () {
     setLoading(true)
 
     const res = await signIn(email, password)
-    console.log(res)
     if (res === 'Usuario incorrecto') {
       alert({
         title: res,

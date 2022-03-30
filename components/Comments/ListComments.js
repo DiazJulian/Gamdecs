@@ -4,7 +4,6 @@ export default function ListComment(props) {
 
     const {comment,userSession,userPost,admin,deleteComment} = props
 
-    console.log(comment, userSession, userPost, admin);
     return  (
         <>
             <div className="comments-container">

@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react'
-
 const USE_DATE = [
   ['day', 86400],
   ['hour', 3600],
@@ -20,19 +18,26 @@ const dateDiff = timestamp => {
 }
 
 export default function useTimeAgo (timestamp) {
-  const [timeago, setTimeago] = useState(() => dateDiff(timestamp))
+  const {value, unit} = dateDiff(timestamp)
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const newDate = dateDiff(timestamp)
-      setTimeago(newDate)
-    }, 5000)
-
-    return () => clearInterval(interval)
-  }, [timestamp])
-
-  const rtf = new Intl.RelativeTimeFormat('es', { style: 'short' })
-  const { value, unit } = timeago
-
+  const rtf = new Intl.RelativeTimeFormat('es', { style: 'long' })
   return rtf.format(value, unit)
 }
+
+// export default function useTimeAgo (timestamp) {
+//   const [timeago, setTimeago] = useState(() => dateDiff(timestamp))
+
+//   useEffect(() => {
+//     const interval = setInterval(() => {
+//       const newDate = dateDiff(timestamp)
+//       setTimeago(newDate)
+//     }, 5000)
+
+//     return () => clearInterval(interval)
+//   }, [timestamp])
+
+//   const rtf = new Intl.RelativeTimeFormat('es', { style: 'short' })
+//   const { value, unit } = timeago
+
+//   return rtf.format(value, unit)
+// }

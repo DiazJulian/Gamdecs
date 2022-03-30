@@ -19,7 +19,6 @@ export const filter = (valor) => {
 
 export const getPost = async (name) => {
   const postUser = await axios.get(`${BaseUrl}/post/p/${name}`)
-  console.log('User Posts: ', postUser)
 
   return postUser
 }
@@ -34,7 +33,6 @@ export const getPosts = async () => {
 
 export const getUserPost = async (path) => {
   const postUser = await axios.get(`${BaseUrl}/post/${path}`)
-  console.log('User Posts: ', postUser)
 
   return postUser
 }
@@ -55,21 +53,18 @@ export const deletePost = async (id) => {
 
 export const getVideos = async () => {
   const videos = await axios.get(`${BaseUrl}/video/videos`)
-  console.log('Videos: ', videos)
 
   return videos
 }
 
 export const getUserVideo = async (name) => {
   const postUser = await axios.get(`${BaseUrl}/video/v/${name}`)
-  console.log('User Videos: ', postUser)
 
   return postUser
 }
 
 export const getVideoPost = async (path) => {
   const postUser = await axios.get(`${BaseUrl}/video/${path}`)
-  console.log('Video: ', postUser)
 
   return postUser
 }
@@ -110,14 +105,12 @@ export const deleteComment = async (id) => {
 
 export const postFav = async (path) => {
   const fav = await axios.post(`${BaseUrl}/post/fav/${path}`)
-  console.log('User Posts: ', fav)
 
   return fav
 }
 
 export const postLike = async (path) => {
   const like = await axios.post(`${BaseUrl}/post/like/${path}`)
-  console.log('User Posts: ', like)
 
   return like
 }
@@ -125,14 +118,12 @@ export const postLike = async (path) => {
 // Video Like - Fav
 export const videoFav = async (path) => {
   const fav = await axios.post(`${BaseUrl}/video/fav/${path}`)
-  console.log('User Posts: ', fav)
 
   return fav
 }
 
 export const videoLike = async (path) => {
   const like = await axios.post(`${BaseUrl}/video/like/${path}`)
-  console.log('User Posts: ', like)
 
   return like
 }

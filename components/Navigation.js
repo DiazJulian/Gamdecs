@@ -1,18 +1,12 @@
-import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Profile from './Profile'
 import Logo from '../public/Logo3.svg'
-import { getSession } from '../services/user'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { useSession } from '../hooks/useSession'
 
 export default function Navigation () {
-  const [user, setUser] = useState(false)
-
-  useEffect(async () => {
-    const res = await getSession()
-    if (res) setUser(true)
-  }, [user])
+  const {session} = useSession()
 
   return (
     <nav className='navigation'>
@@ -20,7 +14,7 @@ export default function Navigation () {
         <Link href='/'><a><Logo /></a></Link>
       </div>
       {
-        !user
+        !session
           ? <nav>
             <Link href='/login'>
               <a>Iniciar Sesion</a>

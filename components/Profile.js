@@ -1,28 +1,13 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React from 'react'
 import Link from 'next/link'
-import { getSession } from '../services/user'
+import { useSession } from '../hooks/useSession'
 
 export default function Profile () {
-  const [name, setName] = useState('')
-  const [profileImage, setProfileImg] = useState('')
+  const {userSession, profileImage} = useSession()
 
-  const updateSession = useCallback(async () => {
-    const data = await getSession()
-    if (data) {
-      setName(data.name)
-      setProfileImg(data.profileImage)
-      console.log(data)
-    }
-  }, [])
-
-  useEffect(() => {
-    updateSession()
-  }, [name, updateSession])
-
-  console.log(name, profileImage)
   return (
     <div className='profContainer'>
-      <Link as={`/${name}`} href={`/${name}`}>
+      <Link as={`/${userSession}`} href={`/${userSession}`}>
         <img src={profileImage} alt='User' />
       </Link>
 

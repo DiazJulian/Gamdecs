@@ -4,6 +4,7 @@ import Layout from '../components/Layout'
 import Navigation from '../components/Navigation'
 import { getUsers } from '../services/user'
 import Footer from '../components/Footer'
+import { useSession } from '../hooks/useSession'
 
 Users.getInitialProps = async () => {
   let users = []
@@ -11,7 +12,7 @@ Users.getInitialProps = async () => {
     const response = await getUsers()
     users = response.data
   } catch (err) {
-    console.error(err)
+    return (err)
   }
 
   return { users: users.splice(0, 20) }
@@ -19,8 +20,7 @@ Users.getInitialProps = async () => {
 
 function Users ({ users }) {
   const [search, setSearch] = useState('')
-  console.log(users)
-  console.log(search)
+  const { session } = useSession()
 
   return (
     <Layout>
@@ -52,7 +52,7 @@ function Users ({ users }) {
 
         </ul>
       </div>
-      <Footer />
+      { session && <Footer /> }
 
       <style jsx>{`
                     .container {

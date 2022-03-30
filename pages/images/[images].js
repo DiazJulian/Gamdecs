@@ -17,7 +17,7 @@ Images.getInitialProps = async (context) => {
     const res = await getUserPost(Path)
     postUser = res.data
   } catch (err) {
-    console.log(err)
+    return (err)
   }
 
   return { postUser, Path }
@@ -40,7 +40,6 @@ export default function Images ({ postUser, Path }) {
   }, [])
 
   const { post } = postUser
-  console.log(postTime)
 
   return (
     <Layout>
@@ -56,7 +55,7 @@ export default function Images ({ postUser, Path }) {
         <Image layout='fill' src={`/${Path}`} />
       </div>
       <Buttons post={post} />
-      <p>{postTime.toLowerCase()}</p>
+      <p>{postTime}</p>
       <CommentForm site='Image' path={Path} />
       <Footer />
 

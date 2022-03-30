@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react'
 import Navigation from '../../components/Navigation'
 import Layout from '../../components/Layout'
 import Footer from '../../components/Footer'
 import Link from 'next/link'
-import { getRole, getSession } from '../../services/user'
+import { getRole } from '../../services/user'
+import { useSession } from '../../hooks/useSession'
 
 Tech.getInitialProps = async (context) => {
   const role = context.query.tech
@@ -11,28 +11,16 @@ Tech.getInitialProps = async (context) => {
   try {
     const res = await getRole(role)
     userData.user = res.data
-    console.log(userData)
   } catch (error) {
-    console.log(error)
+    return (error)
   }
   return { userData }
 }
 
 export default function Tech ({ userData }) {
-  const [session, setSession] = useState(false)
-
-  useEffect(() => {
-    const Session = async () => {
-      const res = await getSession()
-      if (res) {
-        setSession(true)
-      }
-    }
-    Session()
-  }, [session])
+  const {session} = useSession()
 
   const { user, role } = userData
-  console.log(user, role)
   return (
     <Layout>
       <Navigation />

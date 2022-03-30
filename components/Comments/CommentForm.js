@@ -1,27 +1,20 @@
 import React, { useEffect, useState } from 'react'
-import { getSession, userAdmin } from '../../services/user'
 import { newImageComment, newVideoComment, getVideoPost, getUserPost, deleteComment, filter } from '../../services/post'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import ListComment from './ListComments'
+import { useSession } from '../../hooks/useSession'
 
 export default function CommentForm (props) {
   const { site, path } = props
-  console.log(site, path)
-  const [user, setUser] = useState(null)
+  
   const [userPost, setUserPost] = useState('')
-  const [profileImage, setProfileImg] = useState(null)
   const [comment, setComment] = useState('')
   const [allComment, setAllComment] = useState([])
-  const [isAdmin, setAdmin] = useState(false)
-  console.log(userPost)
-  useEffect(async () => {
-    handleUser()
+  const { userSession, profileImage, isAdmin } = useSession()
+  
+  useEffect(() => {
     handleNewComment()
-    const admin = await userAdmin()
-    if (admin) {
-      setAdmin(true)
-    }
   }, [])
 
   const handleNewComment = async () => {
@@ -32,15 +25,7 @@ export default function CommentForm (props) {
     setUserPost(res.data.post.user)
   }
 
-  const handleUser = async () => {
-    const data = await getSession()
-    if (data) {
-      setUser(data.name)
-      setProfileImg(data.profileImage)
-    }
-  }
-
-  const handleComment = async (e) => {
+  const handleComment = (e) => {
     const valor = e.target.value
     const newValor = filter(valor)
 
@@ -57,8 +42,8 @@ export default function CommentForm (props) {
   const handleSubmit = async (e) => {
     e.preventDefault()
     const newCom = site === 'Image'
-      ? await newImageComment(path, comment, profileImage, user)
-      : await newVideoComment(path, comment, profileImage, user)
+      ? await newImageComment(path, comment, profileImage, userSession)
+      : await newVideoComment(path, comment, profileImage, userSession)
     if (newCom) {
       handleNewComment()
       Array.from(document.querySelectorAll('input')).forEach(
@@ -67,11 +52,10 @@ export default function CommentForm (props) {
     }
   }
 
-  console.log(user, userPost)
   return (
     <>
       <p>Comentarios: {allComment.length}</p>
-      <ListComment comment={allComment} userSession={user} userPost={userPost} admin={isAdmin} deleteComment={handleDeleteComment} />
+      <ListComment comment={allComment} userSession={userSession} userPost={userPost} admin={isAdmin} deleteComment={handleDeleteComment} />
       <form onSubmit={handleSubmit}>
         <div className='newComment'>
           <img src={profileImage} alt='user' />

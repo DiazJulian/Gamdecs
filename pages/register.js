@@ -61,7 +61,6 @@ export default function Form () {
     }
 
     const res = await registerUser(formData, config)
-    console.log(res)
     if (res === 'Nombre de usuario existente') {
       alert({
         title: res,
@@ -85,11 +84,6 @@ export default function Form () {
     Router.push('/login')
   }
 
-  console.log(name)
-  console.log(email)
-  console.log(password)
-  console.log(imgForm)
-  console.log(profileImage)
   return (
     <Layout>
       <Head>

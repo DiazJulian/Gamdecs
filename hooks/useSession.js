@@ -1,20 +1,29 @@
-import { useState, useEffect, useCallback } from 'react'
-import { getSession } from '../services/user'
+import { useState, useEffect } from 'react'
+import { getSession, userAdmin } from '../services/user'
 
 export function useSession () {
   const [session, setSession] = useState(false)
-
-  const updateSession = useCallback(async () => {
-    let res = await getSession()
-    if (res = typeof Object) setSession(true)
-    if (res = typeof String) setSession(false)
-  }, [session])
+  const [isAdmin, setAdmin] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [userSession, setName] = useState('')
+  const [profileImage, setProfileImg] = useState('')
 
   useEffect(() => {
-    updateSession()
+    setTimeout(() => {
+      setLoading(true)
+    }, 2000)
+    const resUser = async () => {
+      const res = await getSession()
+      if (res) {
+        setSession(true)
+        setName(res.name)
+        setProfileImg(res.profileImage)
+      }
+      const admin = await userAdmin()
+      if(admin) setAdmin(true)
+    }
+    resUser()
+  }, [session, loading])
 
-    console.log(session)
-  }, [session, updateSession])
-
-  return [session]
+  return {session, loading, userSession, profileImage, isAdmin}
 }

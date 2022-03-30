@@ -5,13 +5,9 @@ import Footer from '../../components/Footer'
 import Youtube from 'react-youtube'
 import { getUser, redirectIfNotAuth } from '../../services/user'
 import { deleteVideo, getVideoPost } from '../../services/post'
-import dayjs from 'dayjs'
-import 'dayjs/locale/es'
-import relativeTime from 'dayjs/plugin/relativeTime'
+import useTimeAgo from '../../hooks/useTimeAgo'
 import Buttons from '../../components/Video/Buttons'
 import CommentForm from '../../components/Comments/CommentForm'
-dayjs.extend(relativeTime)
-dayjs.locale('es')
 
 PostVideo.getInitialProps = async (context) => {
   let postUser
@@ -21,28 +17,25 @@ PostVideo.getInitialProps = async (context) => {
     const res = await getVideoPost(Path)
     postUser = res.data
   } catch (err) {
-    console.log(err)
+    return (err)
   }
 
   return { postUser, Path }
 }
 
 export default function PostVideo ({ postUser, Path }) {
+  const {createdAt} = postUser.post
+  const date = new Date(createdAt)
+  const time = useTimeAgo(+date)
+
   useEffect(async () => {
     redirectIfNotAuth()
-
-    const post = postUser.post
-    const time = dayjs(post.time).fromNow(true)
+    const {post} = postUser
     const user = await getUser(post.user)
-    console.log(user.data)
     if (time === '1 día' && user.data.role === 'Normal') {
-      const postDeleted = await deleteVideo(post._id)
-      console.log(postDeleted)
+      await deleteVideo(post._id)
     }
   }, [])
-
-  console.log(Path)
-  console.log(postUser)
 
   const opts = {
     width: '100%',
@@ -69,7 +62,7 @@ export default function PostVideo ({ postUser, Path }) {
         </div>
       </div>
       <Buttons post={postUser.post} />
-      <p> Hace {dayjs(postUser.post.time).fromNow(true)}</p>
+      <p>{time}</p>
       <CommentForm site='Video' path={Path} />
       <Footer />
 

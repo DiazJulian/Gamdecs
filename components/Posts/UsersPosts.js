@@ -5,45 +5,41 @@ import { getUser } from '../../services/user'
 import { deletePost, getPosts } from '../../services/post'
 import Image from 'next/image'
 import LoaderPost from '../Loaders/LoaderPost'
-import dayjs from 'dayjs'
-import 'dayjs/locale/es'
-import relativeTime from 'dayjs/plugin/relativeTime'
-dayjs.extend(relativeTime)
-dayjs.locale('es')
+import useTimeAgo from '../../hooks/useTimeAgo'
 
 export default function UsersPosts () {
   const [Posts, setPosts] = useState([])
   const [loading, setLoading] = useState(false)
 
-  useEffect(async () => {
-    const res = await getPosts()
-    if (res) {
-      setPosts(res.data)
-      console.log(res.data)
+  useEffect(() => {
+    const allPosts = async () => {
+      const res = await getPosts()
+      if (res) {
+        setPosts(res.data)
+      }
     }
-
+    allPosts()
     handleDeletePost()
   }, [])
 
   const handleDeletePost = async () => {
-    let time
-    let postUser
-    let user
     Posts.map(post => {
-      time = dayjs(post.time).fromNow(true)
       postUser = post
+      const { createdAt } = post
+      const date = new Date(createdAt)
+      time = useTimeAgo(+date)
     })
+    let postUser
+    let time
+    let user
     if (postUser) { user = await getUser(postUser.user) }
-    if ((time === 'un día' || time === '2 días') && user.data.user.role === 'Normal') {
+    if ((time === 'hace un día' || time === 'hace 2 días') && user.data.user.role === 'Normal') {
       const postDeleted = await deletePost(postUser._id)
       if (postDeleted) {
         Router.push('/')
-        console.log(postDeleted)
       }
     }
   }
-
-  console.log(Posts)
 
   return (
     <div className='container'>

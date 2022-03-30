@@ -4,24 +4,17 @@ import { newVideoComment, getVideoPost, deleteComment, filter } from '../../serv
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import ListComment from '../Posts/ListComments';
+import { useSession } from '../../hooks/useSession';
 
 
 export default function CommentVideo(props) {
-
-    const [user, setUser] = useState(null)
     const [userPost, setUserPost] = useState([])
-    const [profileImage, setProfileImg] = useState(null)
     const [comment, setComment] = useState('')
     const [allComment, setAllComment] = useState([])
-    const [isAdmin, setAdmin] = useState(false)
+    const { userSession, profileImage, isAdmin } = useSession()
 
-    useEffect(async () => {
-        handleUser();
+    useEffect(() => {
         handleNewComment();
-        const admin = await userAdmin();
-        if (admin) {
-            setAdmin(true)
-        }
     },[])
 
     const handleNewComment = async () => {
@@ -29,15 +22,6 @@ export default function CommentVideo(props) {
         const res = await getVideoPost(path)
         setAllComment(res.data.comment)
         setUserPost(res.data.post.user)
-    }
-
-
-    const handleUser = async () => {
-        const data = await getSession();
-        if (data) {
-            setUser(data.name)
-            setProfileImg(data.profileImage)
-        }
     }
 
     const handleComment = async (e) => {
@@ -58,7 +42,7 @@ export default function CommentVideo(props) {
         e.preventDefault()
         const videoId = props.path
 
-        const newCom = await newVideoComment(videoId, comment, profileImage, user)
+        const newCom = await newVideoComment(videoId, comment, profileImage, userSession)
         if (newCom) {
             handleNewComment()
             Array.from(document.querySelectorAll("input")).forEach(
@@ -71,7 +55,7 @@ export default function CommentVideo(props) {
     return (
         <>
             <p>Comentarios: {allComment.length}</p>
-            <ListComment comment={allComment} user={user} post={userPost} admin={isAdmin} deleteComment={handleDeleteComment} />
+            <ListComment comment={allComment} user={userSession} post={userPost} admin={isAdmin} deleteComment={handleDeleteComment} />
             <form onSubmit={handleSubmit} >
                 <div className="newComment" >
                     <img src={profileImage} alt="user" />

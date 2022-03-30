@@ -3,11 +3,6 @@ import Link from 'next/link'
 import { getVideos } from '../../services/post'
 import YouTube from 'react-youtube'
 import LoaderPost from '../Loaders/LoaderPost'
-import dayjs from 'dayjs'
-import 'dayjs/locale/es'
-import relativeTime from 'dayjs/plugin/relativeTime'
-dayjs.extend(relativeTime)
-dayjs.locale('es')
 
 export default function UsersVideos () {
   const [Videos, setVideos] = useState([])
@@ -18,8 +13,6 @@ export default function UsersVideos () {
     const res = await getVideos()
     if (isMounted.current) {
       setVideos(res.data)
-      console.log(res.data)
-      console.log('Videos Montado')
     }
   }, [Videos])
 
@@ -28,11 +21,9 @@ export default function UsersVideos () {
 
     return () => {
       isMounted.current = false
-      console.log('Videos Desmontado')
     }
   }, [Videos, updateVideos])
 
-  console.log(Videos)
   const opts = {
     height: '150',
     width: '100%',

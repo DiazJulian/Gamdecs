@@ -10,7 +10,6 @@ export default function Categories () {
     const res = await getCategory()
     if (isMounted.current) {
       setCategories(res.data)
-      console.log('Categories Montado')
     }
   }
 
@@ -19,11 +18,9 @@ export default function Categories () {
 
     return () => {
       isMounted.current = false
-      console.log('Categories Desmontado')
     }
-  }, [categories])
+  }, [])
 
-  console.log(categories)
   return (
     <section className='categories'>
       <div className='category'>

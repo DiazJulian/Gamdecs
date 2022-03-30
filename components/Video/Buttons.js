@@ -4,26 +4,15 @@ import { faTrash, faStar, faEye, faThumbsUp } from '@fortawesome/free-solid-svg-
 import { getSession, userAdmin } from '../../services/user'
 import { deleteVideo, videoFav, videoLike } from '../../services/post'
 import Router from 'next/router'
+import { useSession } from '../../hooks/useSession'
 
 export default function Button (props) {
   const [post] = useState(props.post)
-  const [user, setUser] = useState(null)
-  const [isAdmin, setAdmin] = useState(false)
+  const { userSession, isAdmin } = useSession()
   const [likes, setLikes] = useState(props.post.likes)
   const [favs, setFavs] = useState(props.post.favs)
   const [liked, setLiked] = useState(false)
   const [faved, setFaved] = useState(false)
-
-  useEffect(async () => {
-    const res = await getSession()
-    if (res) {
-      setUser(res.name)
-    }
-    const admin = await userAdmin()
-    if (admin) {
-      setAdmin(true)
-    }
-  }, [])
 
   const handleFav = async (props) => {
     const post = await videoFav(props.videoId)
@@ -46,11 +35,8 @@ export default function Button (props) {
     if (postDeleted) {
       Router.push(`/${props.user}`)
     }
-
-    console.log(postDeleted)
   }
 
-  console.log(user)
   return (
     <span>
       {!faved
@@ -75,7 +61,7 @@ export default function Button (props) {
         <FontAwesomeIcon icon={faEye} /> {post.views}
       </i>
       {
-                (user === post.user || isAdmin) &&
+                (userSession === post.user || isAdmin) &&
                   <button className='iconDelete' onClick={() => handleDelete(post)}>
                     <i>
                       <FontAwesomeIcon icon={faTrash} />

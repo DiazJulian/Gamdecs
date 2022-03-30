@@ -1,23 +1,27 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import Link from 'next/link'
-import { getCategory, getSession } from '../services/user'
+import { getCategory } from '../services/user'
 import Layout from '../components/Layout'
 import Navigation from '../components/Navigation'
 import Footer from '../components/Footer'
+import { useSession } from '../hooks/useSession'
 
 export default function Tech () {
   const [categories, setCategories] = useState([])
-  const [session, setSession] = useState(false)
+  const {session} = useSession()
+  const isMounted = useRef(true)
 
-  useEffect(async () => {
+  const allCategories = async () => {
     const res = await getCategory()
-    if (res) {
+    if (isMounted.current) {
       setCategories(res.data)
     }
+  }
+  useEffect(() => {
+    allCategories()
 
-    const user = await getSession()
-    if (user) {
-      setSession(true)
+    return () => {
+      isMounted.current = false
     }
   }, [])
 
@@ -40,8 +44,7 @@ export default function Tech () {
                         ))}
         </div>
       </section>
-      {session &&
-        <Footer />}
+      {session &&  <Footer />}
 
       <style jsx>{`
                 .title {

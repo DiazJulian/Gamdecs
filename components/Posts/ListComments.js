@@ -1,24 +1,22 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import dayjs from 'dayjs'; 
-import 'dayjs/locale/es';
-import relativeTime from 'dayjs/plugin/relativeTime';
 import setTimeAgo from '../../hooks/setTimeAgo';
-dayjs.extend(relativeTime);
-dayjs.locale('es');
+
 
 export default function ListComment(props) {
 
     const {comment,user,post,admin} = props
-    const postTime = setTimeAgo()
-
+    
     console.log(comment, user, post, admin);
     return  (
         <>
             <div className="comments-container">
                 <ul className="comments-list">
                     { comment &&
-                        comment.map(item =>(
+                        comment.map(item => {
+                        let date = new Date(item.createdAt)
+                        let Time = setTimeAgo(+date)
+                        return(
                         <li key={item._id}>
                             <div className="comment-main-level">
                                 <div className="comment-avatar">
@@ -27,7 +25,7 @@ export default function ListComment(props) {
                                 <div className="comment-box">
                                     <div className="comment-head">
                                         <a href={`/${item.user}`}><p className="comment-name">{item.user}</p></a>
-                                        <span><p>{dayjs(item.time).fromNow(true)}</p>
+                                        <span><p>{Time}</p>
                                             {   (user == item.user || user == post || admin ) &&
                                                 <button onClick={()=> props.deleteComment(item)}>
                                                     <i className="delIcon" >
@@ -41,7 +39,7 @@ export default function ListComment(props) {
                                 </div>
                             </div>
                         </li>
-                        ))
+                        )})
                     }
                 </ul>
             </div>

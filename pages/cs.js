@@ -1,22 +1,19 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { getRole, getSession, getUser } from '../services/user'
+import { getRole, getUser } from '../services/user'
 import Layout from '../components/Layout'
 import Navigation from '../components/Navigation'
 import Footer from '../components/Footer'
+import { useSession } from '../hooks/useSession'
 
 export default function Cs () {
-  const [session, setSession] = useState(false)
+  const {session} = useSession()
   const [Info, setInfo] = useState([])
   const [Comunidad, setComunidad] = useState([])
   const [CSGOUsers, setCSGOUsers] = useState([])
   const [CS16Users, setCS16Users] = useState([])
 
-  useEffect(async () => {
-    const user = await getSession()
-    if (user) {
-      setSession(true)
-    }
+  useEffect(() => {
     CsgoUsers()
     Cs16Users()
   }, [])
@@ -45,12 +42,7 @@ export default function Cs () {
     }
   }
 
-  console.log(CSGOUsers)
-  console.log(CS16Users)
-  console.log(Comunidad)
-
   return (
-
     <Layout>
       <Navigation />
       <section className='categories'>
@@ -91,8 +83,7 @@ export default function Cs () {
           </Link>
         ))}
       </div>
-      {session === true &&
-        <Footer />}
+      {session &&  <Footer />}
       <style jsx>{`
                 .categories {
                     display: flex;

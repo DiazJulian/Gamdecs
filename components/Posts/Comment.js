@@ -1,27 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { getSession, userAdmin } from '../../services/user';
 import { newComment, getUserPost, deleteComment, filter } from '../../services/post';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import ListComment from './ListComments';
+import { useSession } from '../../hooks/useSession';
 
 
 export default function Comment(props) {
     console.log(props.site);
-    const [user, setUser] = useState(null)
     const [userPost, setUserPost] = useState([])
-    const [profileImage, setProfileImg] = useState(null)
     const [comment, setComment] = useState('')
     const [allComment, setAllComment] = useState([])
-    const [isAdmin, setAdmin] = useState(false)
+    const { userSession, profileImage, isAdmin} = useSession()
 
-    useEffect(async () => {
+    useEffect(() => {
         handleUser();
         handleNewComment();
-        const admin = await userAdmin();
-        if (admin) {
-            setAdmin(true)
-        }
     },[])
 
     const handleNewComment = async () => {
@@ -29,15 +23,6 @@ export default function Comment(props) {
         const res = await getUserPost(path)
         setAllComment(res.data.comment)
         setUserPost(res.data.post.user)
-    }
-
-
-    const handleUser = async () => {
-        const data = await getSession();
-        if (data) {
-            setUser(data.name)
-            setProfileImg(data.profileImage)
-        }
     }
 
     const handleComment = async (e) => {
@@ -58,7 +43,7 @@ export default function Comment(props) {
         e.preventDefault()
         const imageId = props.path
 
-        const newCom = await newComment(imageId, comment, profileImage, user)
+        const newCom = await newComment(imageId, comment, profileImage, userSession)
         if (newCom) {
             handleNewComment()
             Array.from(document.querySelectorAll("input")).forEach(
@@ -72,7 +57,7 @@ export default function Comment(props) {
     return (
         <>
             <p>Comentarios: {allComment.length}</p>
-            <ListComment comment={allComment} user={user} post={userPost} admin={isAdmin} deleteComment={handleDeleteComment} />
+            <ListComment comment={allComment} user={userSession} post={userPost} admin={isAdmin} deleteComment={handleDeleteComment} />
             <form onSubmit={handleSubmit} >
                 <div className="newComment" >
                     <img src={profileImage} alt="user" />

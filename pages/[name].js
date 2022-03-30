@@ -14,13 +14,12 @@ User.getInitialProps = async (context) => {
   try {
     const resName = await getUser(name)
     userPost.user = resName.data
-    console.log(resName)
     const post = await getPost(name)
     userPost.post = post.data
     const video = await getUserVideo(name)
     userPost.video = video.data
   } catch (err) {
-    console.error(err)
+    return (err)
   }
 
   return { userPost }
@@ -37,9 +36,6 @@ export default function User ({ userPost }) {
   }, [])
 
   const { user, post, video } = userPost
-  console.log(post)
-  console.log(session)
-  console.log(video)
 
   return (
     <div className='container-user'>
@@ -47,7 +43,7 @@ export default function User ({ userPost }) {
       {user && <Avatar data={user} />}
       {video && <UserVideo data={video} />}
       {post && <MyPosts post={post[0]} />}
-      {session === true && <Footer />}
+      {session && <Footer />}
 
       <style jsx>{`
             .container-user {
